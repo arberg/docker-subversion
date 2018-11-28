@@ -12,3 +12,5 @@ set -ex
 # -v $LOCAL_ROOT/host:/host
 
 docker run -d --name $DOCKER_NAME -p $HOST_PORT:3690 -v $LOCAL_SVN_ROOT:/svn -v $LOCAL_ROOT/etc/svn_sasldb:/etc/svn_sasldb -v $LOCAL_ROOT/etc/sasl2:/etc/sasl2 -v "/etc/timezone:/etc/timezone:ro" -v "/etc/localtime:/etc/localtime:ro" $USERNAME/$IMAGE:latest
+set +x 
+docker exec $DOCKER_NAME svn --version | head -1

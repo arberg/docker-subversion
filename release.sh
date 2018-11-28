@@ -10,6 +10,7 @@ git pull
 
 # tag it
 git add -A
+# Do 'git diff-index || git commit' to avoid committing nothing and to avoid failing due to exitcode 1 and 'set -ex'
 git diff-index --quiet HEAD || git commit -m "version $VERSION"
 git tag -a "$VERSION" -m "version $VERSION"
 git push

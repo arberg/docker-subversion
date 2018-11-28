@@ -1,0 +1,17 @@
+FROM lsiobase/alpine:3.8
+
+RUN \
+ apk add --no-cache --upgrade \
+	subversion \
+	cyrus-sasl
+
+#RUN useradd svn
+
+COPY app/.bash_aliases /root
+
+EXPOSE 3690
+
+# Get Version in log
+RUN svn --version | head -1
+
+CMD svnserve -d --foreground -r /svn --listen-port 3690 --log-file /var/log/svn.log

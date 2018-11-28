@@ -5,7 +5,7 @@ Builds based on both Ubuntu and Alpine.
 
 Current Ubuntu 18.04 has Cyrus-Sasl 2.1.27, where as Alpine v3.8 has Cyrus-Sasl 2.1.26. 
 
-Note: Old SaslDb-files which work on 2.1.26 may not be readable by 2.1.27. 'sasldblistusers2' will report eror if file is unreadable.
+Note: Old SaslDb-files which work on 2.1.26 may not be readable by 2.1.27. 'sasldblistusers2' will report eror if file is unreadable. 
 
 ## How To build docker image again
 

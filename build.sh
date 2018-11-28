@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex
+set +ex
 
 . env.sh
 
@@ -13,3 +13,4 @@ echo "$SVN_VERSION_ECHO"
 SVN_VERSION_ECHO=$(echo "$SVN_VERSION_ECHO" | cut -d" " -f3)
 echo $SVN_VERSION_ECHO > VERSION
 echo "Built svn version '$SVN_VERSION_ECHO'"
+

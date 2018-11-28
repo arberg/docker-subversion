@@ -3,5 +3,7 @@ set -ex
 
 . env.sh
 
-docker build -f Dockerfile-Alpine -t $USERNAME/$IMAGE:latest .
-# docker build -f Dockerfile-Ubuntu -t $USERNAME/$IMAGE:latest-ubuntu .
+# svn 1.10
+docker build -f Dockerfile-Alpine -t $USERNAME/$IMAGE:latest-alpine .
+# svn 1.9.7
+docker build -f Dockerfile-Ubuntu -t $USERNAME/$IMAGE:latest .

@@ -4,5 +4,5 @@ set -ex
 # docker hub username
 USERNAME=arberg
 # image name
-IMAGE=svn
+IMAGE=subversion
 VERSION=$(cat VERSION)

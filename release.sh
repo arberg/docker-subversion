@@ -14,7 +14,7 @@ git tag -a "$VERSION" -m "version $VERSION"
 git push
 git push --tags
 
-sudo docker tag $USERNAME/$IMAGE:latest $USERNAME/$IMAGE:$VERSION
-# push it
-sudo docker push $USERNAME/$IMAGE:latest
-sudo docker push $USERNAME/$IMAGE:$VERSION
+docker tag $USERNAME/$IMAGE:latest $USERNAME/$IMAGE:$VERSION
+# push it - below may kill shell if not logged in, see 'docker login'
+docker push $USERNAME/$IMAGE:latest
+docker push $USERNAME/$IMAGE:$VERSION

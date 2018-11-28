@@ -1,15 +1,16 @@
 set -ex
 
-. env.sh
-
 # ensure we're up to date
 git pull
 
 ./build.sh
 
+# load env after building, because it updates VERSION file
+. env.sh
+
 # tag it
 git add -A
-git commit -m "version $VERSION"
+git diff-index --quiet HEAD || git commit -m "version $VERSION"
 git tag -a "$VERSION" -m "version $VERSION"
 git push
 git push --tags

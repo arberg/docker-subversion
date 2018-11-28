@@ -10,8 +10,6 @@ RUN apt-get update && apt-get install -y \
 COPY app/.bash_aliases /root
 
 EXPOSE 3690
-
-# Get Version in log
-RUN svn --version | head -1
+VOLUME /svn
 
 CMD svnserve -d --foreground -r /svn --listen-port 3690 --log-file /var/log/svn.log

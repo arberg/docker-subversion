@@ -1,0 +1,14 @@
+FROM arberg/subversion:latest
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+      iputils-ping \
+      netcat-openbsd \
+ && rm -rf /var/lib/apt/lists/*
+
+COPY entry-point-isolated.sh /entry-point.sh
+RUN chmod +x /entry-point.sh
+
+ENTRYPOINT ["/entry-point.sh"]
+# The CMD from the parent docker is gone, so repeat it here
+CMD ["svnserve", "-d", "--foreground", "-r", "/svn", "--listen-port", "3690", "--log-file", "/var/log/svn.log"]

@@ -1,16 +1,35 @@
-# docker-subversion
-Docker for Subversion, based on slim Debian
+# Docker Subversion
 
-Note: Old SaslDb-files which work on 2.1.26 may not be readable by 2.1.27. 'sasldblistusers2' will report eror if file is unreadable. 
+Build and release new image and rerun updated isolated version:
+```bash
+./release.sh
+./run-isolated.sh
+```
 
+Build and run normal image:
 
-## How To build docker image again
+```bash
+./build.sh
+./run.sh
+```
 
-* run build.sh or just release.sh
- 
-## How To run
+Build and run isolated image:
 
-* Possibly copy needed sasl files to etc subfolder
-* Possibly edit/remove -v volumes in run.sh for your needs, such as adding or removing sasl-files.
-* run run.sh
+```bash
+./build.sh
+./run-isolated.sh
+```
 
+Run this once, and rerun after UnRaid reboot, as unRaid does not preserve docker rules across reboots:
+```bash
+./install-network-isolation.sh
+```
+
+`build.sh` produces these tags:
+
+- `arberg/subversion:latest`
+- `arberg/subversion:<svn-version>`
+- `arberg/subversion:latest-isolated`
+- `arberg/subversion:<svn-version>-isolated`
+
+The isolated image is built from `arberg/subversion:latest` and adds the network-checking entrypoint plus the required network tools.

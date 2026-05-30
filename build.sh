@@ -7,10 +7,17 @@ SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 . "$SCRIPT_DIR/env"
 
 DOCKERFILE="$SCRIPT_DIR/Dockerfile"
+DOCKERFILE_ISOLATED="$SCRIPT_DIR/Dockerfile.isolated"
 IMAGE_NAME="$USERNAME/$IMAGE"
 BUILD_CONTEXT_DIR="$SCRIPT_DIR"
 BUILD_DATE="$(date -Iseconds)"
 BUILD_HOST="$(hostname)"
+
+TMP_IMAGE="$IMAGE_NAME:tmp"
+cleanup() {
+    docker image rm "$TMP_IMAGE" >/dev/null 2>&1 || true
+}
+trap cleanup EXIT
 
 echo "$IMAGE_NAME"
 echo "$BUILD_CONTEXT_DIR"
@@ -29,8 +36,6 @@ build_image() {
 }
 
 # Temporary build for metadata extraction.
-FINAL_IMAGE="$IMAGE_NAME:latest"
-TMP_IMAGE="$FINAL_IMAGE"
 build_image -t "$TMP_IMAGE"
 
 SVN_VERSION_ECHO="$(docker run --rm "$TMP_IMAGE" svn --version | head -1)"
@@ -54,4 +59,10 @@ build_image \
     -t "$IMAGE_NAME:latest" \
     -t "$IMAGE_NAME:$SVN_VERSION"
 
-docker image rm "$IMAGE_NAME:tmp" >/dev/null 2>&1 || true
+# Isolated image. This intentionally derives from arberg/subversion:latest,
+# which was just built above, so the isolated tags match the current normal image.
+docker build \
+    -f "$DOCKERFILE_ISOLATED" \
+    -t "$IMAGE_NAME:latest-isolated" \
+    -t "$IMAGE_NAME:$SVN_VERSION-isolated" \
+    "$SCRIPT_DIR"

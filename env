@@ -4,8 +4,4 @@
 USERNAME=arberg
 # image name
 IMAGE=subversion
-VERSION=$(cat VERSION)
-
-# For running container
-HOST_PORT=3690
-DOCKER_NAME=Subversion
+VERSION=$(cat VERSION 2>/dev/null || true)

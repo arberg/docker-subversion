@@ -1,28 +1,69 @@
-# ensure we're up to date
-git pull
+#!/bin/bash
+set -e
 
-LAST_VERSION=$(cat VERSION)
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+
+cd "$SCRIPT_DIR"
+
+# ensure we're up to date, including tags
+git pull --tags
 
 ./build.sh
 
-# load env after building, because it updates VERSION file
-. env
+# load env after building; build updates VERSION
+# shellcheck source=env
+. "$SCRIPT_DIR/env"
 
+VERSION="$(cat "$SCRIPT_DIR/VERSION")"
+IMAGE_NAME="$USERNAME/$IMAGE"
 
-if [[ "$LAST_VERSION" != "$VERSION" ]] ;  then
-	set -ex
-	# tag it
-	git add -A
-	# Do 'git diff-index || git commit' to avoid committing nothing and to avoid failing due to exitcode 1 and 'set -ex'
-	git diff-index --quiet HEAD || git commit -m "version $VERSION"
-	git tag -a "$VERSION" -m "version $VERSION"
-	git push
-	git push --tags
+NORMAL_LATEST="$IMAGE_NAME:latest"
+NORMAL_VERSION="$IMAGE_NAME:$VERSION"
+ISOLATED_LATEST="$IMAGE_NAME:latest-isolated"
+ISOLATED_VERSION="$IMAGE_NAME:$VERSION-isolated"
 
-	docker tag $USERNAME/$IMAGE:latest $USERNAME/$IMAGE:$VERSION
-	# push it - below may kill shell if not logged in, see 'docker login'
-	docker push $USERNAME/$IMAGE:latest
-	docker push $USERNAME/$IMAGE:$VERSION
-else 
-	echo "Skip release, because version has already been released"
-fi
+remote_docker_tag_exists() {
+    docker manifest inspect "$1" >/dev/null 2>&1
+}
+
+ensure_git_release() {
+    git add -A
+
+    # Commit only if there are staged/working-tree changes.
+    git diff-index --quiet HEAD || git commit -m "version $VERSION"
+
+    if git rev-parse -q --verify "refs/tags/$VERSION" >/dev/null; then
+        echo "Git tag $VERSION already exists locally."
+    else
+        git tag -a "$VERSION" -m "version $VERSION"
+    fi
+
+    git push
+    git push --tags
+}
+
+release_docker_images() {
+    # Always push latest tags. They intentionally move.
+    docker push "$NORMAL_LATEST"
+    docker push "$ISOLATED_LATEST"
+
+    # Push version tags if they are not already present in the registry.
+    # This fixes the case where VERSION was already updated by a manual build,
+    # but the Docker release was never pushed.
+#    if remote_docker_tag_exists "$NORMAL_VERSION"; then
+#        echo "Docker tag $NORMAL_VERSION already exists in registry."
+#    else
+        docker push "$NORMAL_VERSION"
+#    fi
+
+#    if remote_docker_tag_exists "$ISOLATED_VERSION"; then
+#        echo "Docker tag $ISOLATED_VERSION already exists in registry."
+#    else
+        docker push "$ISOLATED_VERSION"
+#    fi
+}
+
+set -ex
+ensure_git_release
+release_docker_images
+set +x

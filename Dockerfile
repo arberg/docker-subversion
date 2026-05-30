@@ -21,10 +21,11 @@ LABEL local.os_codename="$OS_CODENAME"
 LABEL org.opencontainers.image.created="$BUILD_DATE"
 LABEL org.opencontainers.image.version="$SVN_VERSION"
 
+# libsasl2-modules-ldap
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
       subversion \
-      sasl2-bin \
+      sasl2-bin libsasl2-2 libsasl2-modules \
  && rm -rf /var/lib/apt/lists/*
 
 COPY app/.bash_aliases /root

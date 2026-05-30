@@ -8,12 +8,13 @@ ARG SVN_VERSION="unknown"
 
 LABEL local.build_context_dir="$BUILD_CONTEXT_DIR"
 LABEL local.build_host="$BUILD_HOST"
+LABEL local.svn_version="$SVN_VERSION"
 LABEL org.opencontainers.image.created="$BUILD_DATE"
 LABEL org.opencontainers.image.version="$SVN_VERSION"
 
 RUN apt-get update && apt-get install -y \
-	subversion \
-	sasl2-bin
+    subversion \
+    sasl2-bin
 
 #RUN useradd svn
 

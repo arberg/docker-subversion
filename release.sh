@@ -22,7 +22,7 @@ if [[ "$LAST_VERSION" != "$VERSION" ]] ;  then
 	docker tag $USERNAME/$IMAGE:latest $USERNAME/$IMAGE:$VERSION
 	# push it - below may kill shell if not logged in, see 'docker login'
 	docker push $USERNAME/$IMAGE:latest
-	docker push $USERNAME/$IMAGE:$VERSION-$VARIANT
+	docker push $USERNAME/$IMAGE:$VERSION
 else 
 	echo "Skip release, because version has already been released"
 fi

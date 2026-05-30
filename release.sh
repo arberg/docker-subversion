@@ -6,7 +6,7 @@ LAST_VERSION=$(cat VERSION)
 ./build.sh
 
 # load env after building, because it updates VERSION file
-. env.sh
+. env
 
 
 if [[ "$LAST_VERSION" != "$VERSION" ]] ;  then

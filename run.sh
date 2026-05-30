@@ -1,15 +1,23 @@
-CURRENT_DIR="$( cd "$(dirname "$0")" ; pwd -P )" 
-HOST_PORT=3690
-DOCKER_NAME=Subversion
-LOCAL_ROOT=/mnt/user/docker/subversion
-LOCAL_SVN_ROOT=/svn
-. env.sh
+#!/usr/bin/bash
+CURRENT_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+LOCAL_CONFIG_DATA=/mnt/user/docker/subversion
+LOCAL_SVN_ROOT=/mnt/disk1/svn
+. env
 
-set +ex 
+set +ex
 docker rm -f $DOCKER_NAME
-set -ex 
+set -ex
 
-# -v $LOCAL_ROOT/host:/host
+# -v $LOCAL_CONFIG_DATA/host:/host
 
-docker run -d --name $DOCKER_NAME -p $HOST_PORT:3690 -v $LOCAL_SVN_ROOT:/svn -v $LOCAL_ROOT/etc/svn_sasldb:/etc/svn_sasldb -v $LOCAL_ROOT/etc/sasl2:/etc/sasl2 -v "/etc/timezone:/etc/timezone:ro" -v "/etc/localtime:/etc/localtime:ro" $USERNAME/$IMAGE:latest
-set +x 
+docker run -d \
+	--name $DOCKER_NAME \
+	-p $HOST_PORT:3690 \
+	-v $LOCAL_SVN_ROOT:/svn \
+	-v $LOCAL_CONFIG_DATA/etc/svn_sasldb:/etc/svn_sasldb \
+	-v $LOCAL_CONFIG_DATA/etc/sasl2:/etc/sasl2 \
+	-v "/etc/timezone:/etc/timezone:ro" \
+	-v "/etc/localtime:/etc/localtime:ro" \
+	$USERNAME/$IMAGE:latest
+
+set +x

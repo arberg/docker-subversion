@@ -1,7 +1,7 @@
 #!/bin/bash
 set +ex
 
-. env.sh
+. env
 
 # docker build -f Dockerfile-Alpine -t $USERNAME/$IMAGE:latest-alpine .
 

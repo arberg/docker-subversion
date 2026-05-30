@@ -2,3 +2,58 @@
 .user.md5
 .cache.md5
 etc
+
+#### IDEA BEGIN ####
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+# Alex wants the dictionaries. Avoid having developers using the same user-name to avoid conflicts
+# .idea/**/dictionaries
+.idea/**/shelf
+.idea/**/firebender
+.idea/androidTestResultsUserPreferences.xml
+.idea/deploymentTargetSelector.xml
+.idea/deploymentTargetDropDown.xml
+.idea/other.xml
+.idea/studiobot.xml
+.idea/studiobot.xml
+.idea/copilot.data.migration.*.xml
+
+# AWS User-specific
+.idea/**/aws.xml
+
+# Generated files
+.idea/**/contentModel.xml
+
+# Sensitive or high-churn files
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
+
+# IDEA Gradle
+.idea/**/gradle.xml
+.idea/**/libraries
+
+# IDEA Gradle and Maven with auto-import
+# When using Gradle or Maven with auto-import, you should exclude module files,
+# since they will be recreated, and may cause churn.  Uncomment if using
+# auto-import.
+.idea/artifacts
+.idea/compiler.xml
+.idea/jarRepositories.xml
+.idea/modules.xml
+.idea/*.iml
+.idea/modules
+*.iml
+*.ipr
+# IDEA Cursive Clojure plugin
+.idea/replstate.xml
+
+# IDEA SonarLint plugin
+.idea/sonarlint/
+#### IDEA END ####

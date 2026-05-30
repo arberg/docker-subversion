@@ -1,5 +1,5 @@
 # See versions here: https://hub.docker.com/_/ubuntu/
-FROM ubuntu:rolling
+FROM debian:stable-slim
 
 ARG BUILD_CONTEXT_DIR="unknown"
 ARG BUILD_DATE="unknown"
@@ -23,4 +23,4 @@ COPY app/.bash_aliases /root
 EXPOSE 3690
 VOLUME /svn
 
-CMD svnserve -d --foreground -r /svn --listen-port 3690 --log-file /var/log/svn.log
+CMD ["svnserve", "-d", "--foreground", "-r", "/svn", "--listen-port", "3690", "--log-file", "/var/log/svn.log"]

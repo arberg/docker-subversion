@@ -6,13 +6,20 @@ SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 # shellcheck source=env
 . "$SCRIPT_DIR/env"
 
-DOCKERFILE="$SCRIPT_DIR/Dockerfile-Ubuntu"
+DOCKERFILE="$SCRIPT_DIR/Dockerfile"
 IMAGE_NAME="$USERNAME/$IMAGE"
 BUILD_CONTEXT_DIR="$SCRIPT_DIR"
 BUILD_DATE="$(date -Iseconds)"
 BUILD_HOST="$(hostname)"
 
+echo $IMAGE_NAME
+echo $BUILD_CONTEXT_DIR
+echo $BUILD_DATE
+echo $BUILD_HOST
+
+
 build_image() {
+    echo "$@" 
     docker build \
         --build-arg BUILD_CONTEXT_DIR="$BUILD_CONTEXT_DIR" \
         --build-arg BUILD_DATE="$BUILD_DATE" \

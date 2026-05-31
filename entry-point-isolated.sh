@@ -4,6 +4,10 @@ set -e
 check_network_blocked() {
     failures="$(mktemp)"
 
+    logdate() {
+        date '+%Y-%m-%d %H:%M:%S'
+    }
+
     check_host() {
         local host="$1"
         local description="$2"
@@ -11,18 +15,18 @@ check_network_blocked() {
 
         {
             if ping -c 1 -W 1 "$host" >/dev/null 2>&1; then
-                echo "ERROR: $description ($host) is reachable via ICMP." >> "$failures"
+                echo "$(logdate) ERROR: $description ($host) is reachable via ICMP." >> "$failures"
             fi
         } &
 
         {
             if nc -z -w 2 "$host" "$port" >/dev/null 2>&1; then
-                echo "ERROR: outbound connectivity exists to $description ($host):$port" >> "$failures"
+                echo "$(logdate) ERROR: outbound connectivity exists to $description ($host):$port" >> "$failures"
             fi
         } &
     }
 
-    echo "Checking that outgoing network traffic is blocked..."
+    echo "$(logdate) Checking that outgoing network traffic is blocked..."
 
     # Internet checks
     check_host 1.1.1.1 "Cloudflare" 80
@@ -39,7 +43,7 @@ check_network_blocked() {
     if [ -s "$failures" ]; then
         cat "$failures"
         rm -f "$failures"
-        echo "Refusing to start service due to unblocked network detected."
+        echo "$(logdate) Refusing to start service due to unblocked network detected."
         # Slow it down in case it auto restarts
         sleep 5
         exit 1
@@ -50,6 +54,6 @@ check_network_blocked() {
 
 check_network_blocked
 
-echo "Outgoing network block appears active. Starting service..."
+echo "$(logdate) Outgoing network block appears active. Starting service..."
 
 exec "$@"

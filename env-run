@@ -12,5 +12,5 @@ HOST_CONFIG_DATA_DIR=/mnt/user/docker/subversion
 
 
 # For isolated network variant. Use a unique /24 per isolated docker.
-NETWORK_ISOLATED_SUBNET="${NETWORK_ISOLATED_SUBNET:-172.16.1.0/24}"
-NETWORK_ISOLATED_NAME="${NETWORK_ISOLATED_NAME:-subversion_isolated}"
+NETWORK_ISOLATED_SUBNET="172.16.1.0/24"
+NETWORK_ISOLATED_NAME="subversion_isolated"

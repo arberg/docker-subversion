@@ -32,14 +32,13 @@ ensure_git_release() {
     # Commit only if there are staged/working-tree changes.
     git diff-index --quiet HEAD || git commit -m "version $VERSION"
 
-    if git rev-parse -q --verify "refs/tags/$VERSION" >/dev/null; then
-        echo "Git tag $VERSION already exists locally."
-    else
-        git tag -a "$VERSION" -m "version $VERSION"
-    fi
+    # Always recreate the local Git tag so it points at this release commit.
+    # -f intentionally overwrites an existing tag with the same VERSION.
+    git tag -fa "$VERSION" -m "version $VERSION"
 
     git push
-    git push --tags
+    # Force-push this release tag only, so the remote tag is overwritten too.
+    git push --force origin "refs/tags/$VERSION"
 }
 
 release_docker_images() {

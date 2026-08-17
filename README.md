@@ -7,8 +7,8 @@ subnet, then deploy `compose.yaml` through Compose Manager Plus. The stack
 publishes the Subversion protocol at `svn://<unraid-host>:3690` by default; it
 does not provide a web interface.
 
-The Compose stack preserves the isolated deployment used by
-`run-isolated.sh`. Run `install-network-isolation.sh` once after deployment and
+Both `run.sh` and the compatibility wrapper `run-isolated.sh` now start this
+Compose stack. Run `install-network-isolation.sh` once after deployment and
 again after every Unraid reboot because Unraid does not preserve those firewall
 rules.
 
@@ -18,14 +18,14 @@ Build and release new image and rerun updated isolated version:
 ./run-isolated.sh
 ```
 
-Build and run normal image:
+Build and start the Compose stack:
 
 ```bash
 ./build.sh
 ./run.sh
 ```
 
-Build and run isolated image:
+The former isolated launcher is retained as a compatibility alias:
 
 ```bash
 ./build.sh

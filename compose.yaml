@@ -1,0 +1,30 @@
+name: subversion
+
+services:
+  subversion:
+    image: ${SUBVERSION_IMAGE:-arberg/subversion:latest-isolated}
+    container_name: subversion
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "${SVN_PORT:-3690}:3690"
+    volumes:
+      - ${SVN_DATA_PATH:-/mnt/disk1/svn}:/svn
+      - ${CONFIG_DATA_PATH:-/mnt/user/docker/subversion}/etc/svn_sasldb:/etc/svn_sasldb
+      - ${CONFIG_DATA_PATH:-/mnt/user/docker/subversion}/etc/sasl2:/etc/sasl2
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - isolated
+    labels:
+      net.unraid.docker.icon: ${CONTAINER_ICON_URL:-https://subversion.apache.org/logo/subversion-button.gif}
+      net.unraid.docker.shell: /bin/bash
+
+networks:
+  isolated:
+    name: ${NETWORK_ISOLATED_NAME:-subversion_isolated}
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${NETWORK_ISOLATED_SUBNET:-172.16.1.0/24}

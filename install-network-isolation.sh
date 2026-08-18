@@ -3,8 +3,7 @@ set -eu
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 
-# shellcheck source=env-run
-. "$SCRIPT_DIR/env-run"
+. "$SCRIPT_DIR/.env"
 
 ensure_rule() {
     chain="$1"

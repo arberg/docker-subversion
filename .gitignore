@@ -64,3 +64,4 @@ started_at
 # IDEA SonarLint plugin
 .idea/sonarlint/
 #### IDEA END ####
+project_name
